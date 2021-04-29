@@ -1,0 +1,21 @@
+{
+  "name": "zejzzbot",
+  "version": "1.0.0",
+  "description": "Bot created by Zejzz using DiscordJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Zejzz",
+  "license": "BSD-3-Clause-Attribution",
+  "dependencies": {
+    "ascii-table": "0.0.9",
+    "colors": "^1.4.0",
+    "discord.js": "^12.5.3",
+    "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.25.0",
+    "eslint-config-tesseract": "0.0.3"
+  }
+}
