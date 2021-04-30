@@ -3,6 +3,7 @@ module.exports = {
 	name: 'ping',
 	description: 'Ping!',
 	aliases: ['pong'],
+	guildOnly: true,
 	minReqPermissions: ['DELETE_MESSAGES'],
 	maxReqPermissions: ['ADMINISTRATOR'],
 	botExecutePermissions: ['SEND_MESSAGES'],

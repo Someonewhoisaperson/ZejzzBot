@@ -124,9 +124,28 @@ class Logger {
 
 }
 
+function countCharOccur(str, char)
+{
+  // checking string is valid or not 
+  if( str.length == 0 ) {
+    throw new InvalidArgumentError("countOccur( str )")
+  }
+  let count = 0;
+  //for loop to iterate over string
+  for( let i = 0 ;i < str.length ;i++) { 
+	if (str.charAt(i) == char) count++;
+
+  }
+  return count;
+      
+}
+  
+
+
 exports.InvalidConfigurationError = InvalidConfigurationError;
 exports.InvalidCommandFileError = InvalidCommandFileError;
 exports.CommmandMissingRequiredOptionError = CommmandMissingRequiredOptionError;
 exports.EventMissingRequiredOptionError = EventMissingRequiredOptionError;
 exports.config = config;
 exports.Logger = Logger;
+exports.countCharOccur = countCharOccur;

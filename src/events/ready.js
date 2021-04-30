@@ -1,7 +1,7 @@
 const { Logger } = require('../common/common.js');
 const Log = new Logger();
 module.exports = {
-	name: 'ready',
+	eventType: 'ready',
 	// Only triggers once
 	once: true,
 	execute(client) {
