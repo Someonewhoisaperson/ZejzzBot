@@ -2,7 +2,7 @@
   "name": "zejzzbot",
   "version": "1.0.0",
   "description": "Bot created by Zejzz using DiscordJS",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
