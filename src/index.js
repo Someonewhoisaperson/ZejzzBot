@@ -20,27 +20,26 @@ const fs = require('fs');
 const Ascii = require('ascii-table');
 const Discord = require('discord.js');
 const client = new Discord.Client();
+client.cooldowns = new Discord.Collection();
 
 // EVENT HANDLER-
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
-	Log.debug(`Iterating through ${file}`)
+	Log.debug(`Iterating through ${file}`);
 	const event = require(`./events/${file}`);
-	if (!event.eventType) throw new CommmandMissingRequiredOptionError(file, '(Event) eventType')
+	if (!event.eventType) throw new CommmandMissingRequiredOptionError(file, '(Event) eventType');
 	if (event.once) {
 		client.once(event.eventType, async (...args) => event.execute(...args, client));
-		Log.success(`Registered (once) event ${file} as ${event.eventType}`)
+		Log.success(`Registered (once) event ${file} as ${event.eventType}`);
 	} else {
-		client.on(event.eventType, async(...args) => event.execute(...args, client));
-		Log.success(`Registered (on) event ${file} as ${event.eventType}`)
+		client.on(event.eventType, async (...args) => event.execute(...args, client));
+		Log.success(`Registered (on) event ${file} as ${event.eventType}`);
 	}
 }
 
 
 // COMMAND HANDLER
 
-// cooldown
-client.cooldowns = new Discord.Collection();
 
 // Command options
 /*
@@ -55,6 +54,7 @@ client.cooldowns = new Discord.Collection();
 
 // Load commands
 client.commands = new Discord.Collection();
+
 // Checks if a config value is enabled that makes the program throw errors for non-setup optional values
 const throwErr = config['require-all-command-options'];
 Log.debug(`Config value : ${config['require-all-command-options']} | bool value : ${throwErr}`);
@@ -89,6 +89,7 @@ for (const folder of commandFolders) {
 		if (!command.description) throw new CommmandMissingRequiredOptionError(file, 'description');
 		if (!command.botExecutePermissions) throw new CommmandMissingRequiredOptionError(file, 'botExecutePermissions');
 		if (!command.usage) throw new CommmandMissingRequiredOptionError(file, 'usage');
+		// eslint-disable-next-line eqeqeq
 		if (command.guildOnly == null) throw new CommmandMissingRequiredOptionError(file, 'guildOnly');
 		// Optional options for each command, if "throwerr" is set to true, throw a error, else set it to a pre-defiend default value.
 		if (!command.cooldown) {
@@ -98,12 +99,27 @@ for (const folder of commandFolders) {
 			command.cooldown = 5;
 			Log.warn(`No per user cooldown specified for command ${command.name} (${file})`);
 		}
+		if (command.guildOwnerOnly === null) {
+			if (throwErr) {
+				throw new CommmandMissingRequiredOptionError(file, 'guildOwnerOnly');
+			}
+			command.botAdminOnly = false;
+			Log.warn(`If only server owners can use the command ${command.name} is not specified (${file})`);
+		}
 
-		if (!command.aliases) {
+		if (command.botAdminOnly === null) {
+			if (throwErr) {
+				throw new CommmandMissingRequiredOptionError(file, 'botAdminOnly');
+			}
+			command.botAdminOnly = false;
+			Log.warn(`If only bot admins can use the ${command.name} is not specified (${file})`);
+		}
+
+		if (!command.aliases || !command.aliases.length) {
 			if (throwErr) {
 				throw new CommmandMissingRequiredOptionError(file, 'aliases');
 			}
-			command.aliases = ['None'];
+			command.aliases = [];
 			Log.warn(`No aliases specified for command ${command.name} (${file})`);
 		}
 		if (!command.minReqPermissions) {
@@ -134,11 +150,16 @@ for (const folder of commandFolders) {
 				throw new CommmandMissingRequiredOptionError(file, 'stablility');
 			}
 			// Check if there are option arguments defiened in usage paramater
-			if (command.usage.includes('<')) { command.requireArgs = true; } else { command.requireArgs = false;}
-			Log.warn(`No requireArgs specified for command ${command.name} (${file})`);
+			if (command.usage.includes('<')) {
+				command.requireArgs = true;
+			} else {
+				command.requireArgs = false;
+			}
+			Log.warn(`No requireArgs specified for command ${command.name} (${file}) when requireArgs are ${command.requireArgs}`);
 		}
-		if (client.commands.has(command) || client.commands.has(command.name) || client.commands.has(cmd => cmd.aliases && cmd.aliases.includes(commandName))) { 
-			Log.warn(`Failed to load command ${file}. Command with same name already exists`)
+
+		if (client.commands.has(command) || client.commands.has(command.name)) {
+			Log.warn(`Failed to load command ${file}. Command with same name or alias already exists`);
 			asciiTable.addRow(file,
 				command.name,
 				command.category,
@@ -147,7 +168,7 @@ for (const folder of commandFolders) {
 				command.stability,
 				prefix + command.usage
 			);
-		} else { 
+		} else {
 			// If everything is ok, then add it to the collection of commands and print a nice ASCII table
 			client.commands.set(command.name, command);
 			Log.success(`Command ${command.name} was successfully added to collection`);
@@ -157,7 +178,7 @@ for (const folder of commandFolders) {
 				`${command.minReqPermissions} || ${command.maxReqPermissions}`,
 				'✅',
 				command.stability,
-				prefix + command.usage 
+				prefix + command.usage
 			);
 		}
 	}
