@@ -6,6 +6,6 @@ module.exports = {
 	once: true,
 	execute(client) {
 		Log.success(` Client logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
-		client.user.setActivity('Testing,....');
+		client.user.setActivity('https://github.com/Someonewhoisaperson/ZejzzBot. Bot is now open source :D');
 	}
 };

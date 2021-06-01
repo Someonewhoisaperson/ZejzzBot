@@ -117,7 +117,7 @@ class Logger {
 
 	verbose(message) {
 		if (this.logLevel >= 3) {
-			console.log(`[VERBOSE] ${message}`.verbose);
+			if (config['log-verbose']) console.log(`[VERBOSE] ${message}`.verbose);
 		}
 	}
 
