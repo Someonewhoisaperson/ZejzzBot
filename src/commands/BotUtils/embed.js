@@ -12,7 +12,7 @@ module.exports = {
 	botExecutePermissions: ['MANAGE_MESSAGES', 'MENTION_EVERYONE'],
 	requireArgs: true,
 	usage: 'embed <TBA> <HI> <OPTIONS SOON XD> <LOL>',
-	execute(message) {
+	execute(client, message) {
 		const exampleEmbed = new Discord.MessageEmbed()
 			.setColor('#0099ff')
 			.setTitle('Some title')

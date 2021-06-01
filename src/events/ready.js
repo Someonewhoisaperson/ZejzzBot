@@ -6,6 +6,6 @@ module.exports = {
 	once: true,
 	execute(client) {
 		Log.success(` Client logged in as ${client.user.username}#${client.user.discriminator} (${client.user.id})`);
-		client.user.setActivity('Zejzz is cool');
+		client.user.setActivity('Testing,....');
 	}
 };

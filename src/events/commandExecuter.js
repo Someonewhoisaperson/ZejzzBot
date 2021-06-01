@@ -83,7 +83,7 @@ module.exports = {
 		if (command.botAdminOnly && !message.author.id === 717091956747927583) return message.reply('Denied.');
 		// Execute the command, if error then show it
 		try {
-			command.execute(message, args);
+			command.execute(client, message, args);
 		} catch (error) {
 			console.error(error);
 			message.reply('there was an error trying to execute that command!');

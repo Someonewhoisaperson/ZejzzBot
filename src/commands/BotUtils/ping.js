@@ -10,7 +10,7 @@ module.exports = {
 	botExecutePermissions: ['SEND_MESSAGES'],
 	requireArgs: true,
 	usage: 'ping',
-	execute(message) {
-		message.reply('Pong!');
+	execute(client, message) {
+		message.reply('Command is disabled. Do .status');
 	}
 };

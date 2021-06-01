@@ -1,5 +1,5 @@
 module.exports = {
-	category: 'BotUtils',
+	category: 'Fun',
 	name: 'say',
 	description: 'Ping!',
 	aliases: ['speak'],
