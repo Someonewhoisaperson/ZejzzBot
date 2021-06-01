@@ -1,11 +1,7 @@
-const { Logger } = require('../../common/common.js');
-const fs = require('fs');
-const Log = new Logger();
 const Discord = require('discord.js');
 const prettyMilliseconds = require('pretty-ms');
-const { cpu, netstat } = require('node-os-utils');
+const { cpu } = require('node-os-utils');
 const os = require('os');
-const ping = require('./ping.js');
 const process = require('process');
 
 module.exports = {
