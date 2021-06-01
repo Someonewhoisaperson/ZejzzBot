@@ -10,7 +10,8 @@ module.exports = {
 	botExecutePermissions: ['MANAGE_MESSAGES', 'MENTION_EVERYONE'],
 	requireArgs: true,
 	usage: 'say <args*>',
-	execute(message, args) {
+	stability: 'release',
+	execute(client, message, args) {
 		message.channel.send(args.join(' '));
 	}
 };

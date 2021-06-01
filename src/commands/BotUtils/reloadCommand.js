@@ -15,6 +15,7 @@ module.exports = {
 	botExecutePermissions: ['SEND_MESSAGES'],
 	requireArgs: true,
 	usage: 'reloadCommand <cmd>',
+	stability: 'Caution',
 	execute(client, message, args) {
 		const commandName = args[0].toLowerCase();
 		Log.warn(`Attempting to reload command... ${commandName} <- ${message.id}`);

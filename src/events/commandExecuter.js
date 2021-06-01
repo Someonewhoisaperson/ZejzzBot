@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
 const { Logger, config, countCharOccur } = require('../common/common.js');
@@ -35,10 +36,22 @@ module.exports = {
 		if (cmdName.length === 0) return;
 		// fetch commands from command collection
 
-		if (!client.commands.has(cmdName)) Log.verbose(`${cmdName} not found in client commands collection... checking aliases`);
+		if (!client.commands.has(cmdName)) Log.verbose(`${cmdName} not found in client commands collection... checking sniper commands`);
+		global.commandaa = null;
+		//TODO , IF SNIPER COMMAND, MOVE ARGS DOWN, AND RUN ACTUAL COMMAND, AND CHECK FOR FOLDER INSIDE FOLDER OF SNIPER COMMAND!
+		if (cmdName === 's') {
+			cmdName = args.shift().toLower();
+		}
 
-		const command = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
-
+		if (client.snipercommands.has(cmdName)) {
+			Log.verbose(`${cmdName} found in snipercommands`);
+			global.commandaa = client.snipercommands.get(cmdName);
+		} else {
+			Log.verbose(`${cmdName} not found in snipercommands, checking aliases`);
+			global.commandaa = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
+		}
+		const command = global.commandaa;
+		Log.debug(command.guildOnly);
 		if (!command) {
 			Log.debug(`${cmdName} not found in client commands collection or aliases`);
 			return;

@@ -5,7 +5,7 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 // Load common.js
-const { InvalidConfigurationError, CommmandMissingRequiredOptionError, Logger, config } = require('./common/common.js');
+const { InvalidConfigurationError, CommmandMissingRequiredOptionError, InvalidCommandFileError, Logger, config } = require('./common/common.js');
 const { prefix } = config;
 // Initialize the Logger
 const Log = new Logger();
@@ -54,7 +54,7 @@ for (const file of eventFiles) {
 
 // Load commands
 client.commands = new Discord.Collection();
-
+client.snipercommands = new Discord.Collection();
 // Checks if a config value is enabled that makes the program throw errors for non-setup optional values
 const throwErr = config['require-all-command-options'];
 Log.debug(`Config value : ${config['require-all-command-options']} | bool value : ${throwErr}`);
@@ -115,13 +115,25 @@ for (const folder of commandFolders) {
 			Log.warn(`If only bot admins can use the ${command.name} is not specified (${file})`);
 		}
 
-		if (!command.aliases || !command.aliases.length) {
-			if (throwErr) {
-				throw new CommmandMissingRequiredOptionError(file, 'aliases');
+		if ((!command.aliases || !command.aliases.length)) {
+			if (!command.category === 'HYPIXELSNIPER') {
+				// eslint-disable-next-line max-depth
+				if (throwErr) {
+					throw new CommmandMissingRequiredOptionError(file, 'aliases');
+				}
+				command.aliases = [];
+				Log.warn(`No aliases specified for command ${command.name} (${file})`);
 			}
-			command.aliases = [];
-			Log.warn(`No aliases specified for command ${command.name} (${file})`);
 		}
+
+		if (command.category === 'HYPIXELSNIPER' && command.aliases) {
+			if (throwErr) {
+				throw new InvalidCommandFileError(file, 'HYPIXELSNIPER commands cannot include aliases');
+			}
+			command.alias = null;
+			Log.warn(`Command of HYPIXELSNIPER includes aliases (${command.name}) (${file})`);
+		}
+
 		if (!command.minReqPermissions) {
 			if (throwErr) {
 				throw new CommmandMissingRequiredOptionError(file, 'minReqPermissions');
@@ -144,10 +156,9 @@ for (const folder of commandFolders) {
 			command.stability = 'INDEV';
 			Log.warn(`No maxReqPermissons specified for command ${command.name} (${file})`);
 		}
-
-		if (!command.requireArgs) {
+		if (command.requireArgs === null) {
 			if (throwErr) {
-				throw new CommmandMissingRequiredOptionError(file, 'stablility');
+				throw new CommmandMissingRequiredOptionError(file, 'requireargs');
 			}
 			// Check if there are option arguments defiened in usage paramater
 			if (command.usage.includes('<')) {
@@ -170,8 +181,13 @@ for (const folder of commandFolders) {
 			);
 		} else {
 			// If everything is ok, then add it to the collection of commands and print a nice ASCII table
-			client.commands.set(command.name, command);
-			Log.success(`Command ${command.name} was successfully added to collection`);
+			if (command.category === 'HYPIXELSNIPER') {
+				client.snipercommands.set(command.name, command);
+				Log.success(`Sniper Command ${command.name} was successfully added to sniper collection`);
+			} else {
+				client.commands.set(command.name, command);
+				Log.success(`Command ${command.name} was successfully added to collection`);
+			}
 			asciiTable.addRow(file,
 				command.name,
 				command.category,

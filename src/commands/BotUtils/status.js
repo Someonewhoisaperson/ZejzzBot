@@ -11,11 +11,12 @@ module.exports = {
 	aliases: ['uptime', 'pingms'],
 	guildOnly: false,
 	botAdminOnly: true,
-	cooldown: 1,
+	cooldown: 15,
 	minReqPermissions: [' '],
 	maxReqPermissions: [' '],
 	botExecutePermissions: ['SEND_MESSAGES'],
 	requireArgs: false,
+	stability: 'beta',
 	usage: 'status',
 	execute(client, message) {
 		// Create 3 embeds, one shows bot uptime, ping, api latency and downtime from discord
