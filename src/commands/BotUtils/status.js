@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 const Discord = require('discord.js');
 const prettyMilliseconds = require('pretty-ms');
 const { cpu } = require('node-os-utils');

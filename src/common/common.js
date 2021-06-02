@@ -2,7 +2,7 @@
 
 
 const config = require('../config.json');
-
+const fs = require('fs');
 
 // Error handling
 
@@ -137,6 +137,14 @@ function countCharOccur(str, char) {
 	return count;
 }
 
+function isDirectory(path) {
+	fs.stat(path, (error, stats) => {
+		if (error) return console.log(error);
+		return stats.isDirectory();
+	});
+}
+
+
 exports.InvalidConfigurationError = InvalidConfigurationError;
 exports.InvalidCommandFileError = InvalidCommandFileError;
 exports.CommmandMissingRequiredOptionError = CommmandMissingRequiredOptionError;
@@ -144,3 +152,4 @@ exports.EventMissingRequiredOptionError = EventMissingRequiredOptionError;
 exports.config = config;
 exports.Logger = Logger;
 exports.countCharOccur = countCharOccur;
+exports.isDirectory = isDirectory;

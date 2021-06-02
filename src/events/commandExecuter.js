@@ -98,7 +98,7 @@ module.exports = {
 
 		if (command.botAdminOnly && !message.author.id === 717091956747927583) return message.reply('Denied.');
 		// Execute the command, if error then show it
-		if (command.stability === 'Danger' || command.stability === 'Caution') {
+		if (command.stability === 'Dangerous' || command.stability === 'Caution') {
 			Log.warn(`${message.author.id} (${message.author.username}) attempted to run dangerous command ${command.name}`);
 			const cmdDangerEmbed = new Discord.MessageEmbed()
 				.setColor('e51d1d')
