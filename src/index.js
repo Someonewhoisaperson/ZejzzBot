@@ -22,6 +22,30 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.cooldowns = new Discord.Collection();
 
+const mysql = require('mysql');
+Log.verbose(config['mysql-login'].host);
+Log.verbose(process.env.MYSQL_USER);
+Log.verbose(process.env.MYSQL_PASSWORD);
+Log.verbose(config['mysql-login'].database);
+
+if (config['mysql-enabled']) {
+	var connection = mysql.createConnection({
+		host: config['mysql-login'].host,
+		user: process.env.MYSQL_USER,
+		password: process.env.MYSQL_PASSWORD,
+		database: config['mysql-login'].database
+	});
+
+	connection.connect(err => {
+		if (err) throw err;
+		Log.success(`Connected to database MYSQL ${config['mysql-login'].host}`);
+		client.mysqlCon = connection;
+		Log.debug('Initialized connection to client.mysqlCon');
+		connection.query('SHOW TABLES', console.log);
+	});
+}
+
+
 // EVENT HANDLER-
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
 for (const file of eventFiles) {
@@ -59,12 +83,14 @@ client.snipercommands = new Discord.Collection();
 const throwErr = config['require-all-command-options'];
 Log.debug(`Config value : ${config['require-all-command-options']} | bool value : ${throwErr}`);
 
+
 // Creates the base for a nice looking table
 const asciiTable = new Ascii('Commands');
 asciiTable.setHeading('File', 'Command', 'Category', 'Permissions', 'Load Status', 'Stability', 'Usage');
 // Loops through folders
 const commandFolders = fs.readdirSync('./commands');
 Log.log(`List of command subdirs ${commandFolders}`);
+Log.debug('Verifying command files and loading commands....');
 for (const folder of commandFolders) {
 	Log.debug(`Iterating through folder ${folder}`);
 	const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
@@ -115,7 +141,7 @@ for (const folder of commandFolders) {
 			Log.warn(`If only bot admins can use the ${command.name} is not specified (${file})`);
 		}
 
-		if ((!command.aliases || !command.aliases.length)) {
+		if (!command.aliases || !command.aliases.length) {
 			if (!command.category === 'HYPIXELSNIPER') {
 				// eslint-disable-next-line max-depth
 				if (throwErr) {

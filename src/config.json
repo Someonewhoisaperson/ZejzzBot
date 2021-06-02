@@ -1,7 +1,7 @@
 {
     "prefix": ".",
     "require-all-command-options": true,
-    "log-verbose": false,
+    "log-verbose": true,
     "default-logLevel": "verbose",
     "mysql-enabled": true,
     "mysql-login": {

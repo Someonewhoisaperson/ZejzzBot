@@ -30,7 +30,7 @@ module.exports = {
 		const args = message.content.slice(prefix.length).trim().split(/ +/);
 		Log.verbose(`Args : ${args} | ${message.id}`);
 		// Get command, is case insenitive
-		const cmdName = args.shift().toLowerCase();
+		var cmdName = args.shift().toLowerCase();
 		Log.verbose(`cmdName: ${cmdName} | ${message.id}`);
 		// If command is empty then return
 		if (cmdName.length === 0) return;
@@ -38,24 +38,27 @@ module.exports = {
 
 		if (!client.commands.has(cmdName)) Log.verbose(`${cmdName} not found in client commands collection... checking sniper commands`);
 		global.commandaa = null;
-		//TODO , IF SNIPER COMMAND, MOVE ARGS DOWN, AND RUN ACTUAL COMMAND, AND CHECK FOR FOLDER INSIDE FOLDER OF SNIPER COMMAND!
+		// TODO , IF SNIPER COMMAND, MOVE ARGS DOWN, AND RUN ACTUAL COMMAND, AND CHECK FOR FOLDER INSIDE FOLDER OF SNIPER COMMAND!
 		if (cmdName === 's') {
-			cmdName = args.shift().toLower();
+			cmdName = args.shift();
+			Log.debug(`New cmdName ${cmdName}`);
+			args.splice(0, 1);
+			Log.verbose(`Sniper command detected, new args ${args.shift()}`);
+			if (client.snipercommands.has(cmdName)) {
+				Log.verbose(`${cmdName} found in snipercommands`);
+				global.commandaa = client.snipercommands.get(cmdName);
+			} else {
+				message.reply('Unknown command');
+			}
 		}
 
-		if (client.snipercommands.has(cmdName)) {
-			Log.verbose(`${cmdName} found in snipercommands`);
-			global.commandaa = client.snipercommands.get(cmdName);
-		} else {
-			Log.verbose(`${cmdName} not found in snipercommands, checking aliases`);
-			global.commandaa = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
-		}
+		if (!global.comandaa) global.commandaa = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
 		const command = global.commandaa;
-		Log.debug(command.guildOnly);
 		if (!command) {
 			Log.debug(`${cmdName} not found in client commands collection or aliases`);
 			return;
 		}
+		Log.debug(command.guildOnly);
 
 		if (command.guildOnly && message.channel.type === 'dm') return message.reply('Command can only be used in a server');
 
@@ -95,6 +98,18 @@ module.exports = {
 
 		if (command.botAdminOnly && !message.author.id === 717091956747927583) return message.reply('Denied.');
 		// Execute the command, if error then show it
+		if (command.stability === 'Danger' || command.stability === 'Caution') {
+			Log.warn(`${message.author.id} (${message.author.username}) attempted to run dangerous command ${command.name}`);
+			const cmdDangerEmbed = new Discord.MessageEmbed()
+				.setColor('e51d1d')
+				.setTitle('Potentially destructive command')
+				.setThumbnail('https://www.vkf-renzel.com/out/pictures/generated/product/1/650_650_75/r12044336-01/general-warning-sign-10836-1.jpg')
+				.setURL('https://dev.zejzz.net/')
+				.setDescription('This command has been flagged as being potentially dangerous to execute/reveals sensitive information. Make sure to remove/refractor this later')
+				.addFields({ name: command.description, value: `Warn Level: ${command.stability}` })
+				.setTimestamp();
+			message.channel.send(cmdDangerEmbed);
+		}
 		try {
 			command.execute(client, message, args);
 		} catch (error) {
