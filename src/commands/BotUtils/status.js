@@ -16,7 +16,7 @@ module.exports = {
 	maxReqPermissions: [' '],
 	botExecutePermissions: ['SEND_MESSAGES'],
 	requireArgs: false,
-	stability: 'beta',
+	stability: 'indev',
 	usage: 'status',
 	execute(client, message) {
 		// Create 3 embeds, one shows bot uptime, ping, api latency and downtime from discord
@@ -44,12 +44,17 @@ module.exports = {
 						{ name: '\u200B', value: '\u200B' },
 						{ name: 'Proccess ID', value: process.pid, inline: true },
 						{ name: 'Node Version', value: process.version, inline: true },
-						{ name: 'Operating System', value: process.platform, inline: true }
+						{ name: 'Operating System', value: process.platform, inline: true },
+						{ name: '\u200B', value: '\u200B' },
+						{ name: 'Database Type', value: 'Feature not added yet...', inline: true },
+						{ name: 'Database size:', value: 'NotSetUpKB', inline: true },
+						{ name: 'Database Latency', value: '69420ms', inline: true}
 					)
 					.setTimestamp()
 					.setFooter(`Uptime: ${prettyMilliseconds(client.uptime)}`);
 				message.channel.send(botStatusEmbed);
 			});
 		});
+		//TODO EMBED  OUT ACTIVE COMMANDS AND STATUS
 	}
 };

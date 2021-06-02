@@ -1,0 +1,27 @@
+{
+    "prefix": ".",
+    "require-all-command-options": true,
+    "log-verbose": false,
+    "default-logLevel": "verbose",
+    "mysql-enabled": true,
+    "mysql-login": {
+        "host": "45.134.8.171",
+        "port": 3306,
+        "database": "s10694_zejzzbot"
+    },
+    "mongodb-enabled": false,
+    "mongodb-login": {
+        "host": "www.google.com",
+        "port": 27017,
+        "database": "n/a"
+    },
+
+    "sqlite-enabled": false,
+    "sqlite-login": {
+        "host": "localhost",
+        "dialect": "sqlite",
+        "logging": "false",
+        "storage": "database.sqlite"
+    }
+    
+}
