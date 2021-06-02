@@ -3,6 +3,7 @@
 
 const config = require('../config.json');
 const fs = require('fs');
+const { MessageEmbed } = require('discord.js');
 
 // Error handling
 
@@ -144,6 +145,27 @@ function isDirectory(path) {
 	});
 }
 
+function CommandFailEmbed(author, info, additionlInfo) {
+	var cmdFailEmbed = new MessageEmbed()
+		.setColor('d79463')
+		.setTitle('Command Failed')
+		.setURL('https://dev.zejzz.net/')
+		.setDescription(info)
+		.setTimestamp()
+		.setFooter(`${author.id} (${author.tag})`);
+	if (additionlInfo) cmdFailEmbed.setDescription(additionlInfo);
+	return cmdFailEmbed;
+}
+
+function CommandSuccessEmbed(author, info) {
+	const cmdFailEmbed = new MessageEmbed()
+		.setColor('52e81e')
+		.setTitle(info)
+		.setURL('https://dev.zejzz.net/')
+		.setTimestamp()
+		.setFooter(`${author.id} (${author.tag})`);
+	return cmdFailEmbed;
+}
 
 exports.InvalidConfigurationError = InvalidConfigurationError;
 exports.InvalidCommandFileError = InvalidCommandFileError;
@@ -153,3 +175,5 @@ exports.config = config;
 exports.Logger = Logger;
 exports.countCharOccur = countCharOccur;
 exports.isDirectory = isDirectory;
+exports.CommandFailEmbed = CommandFailEmbed;
+exports.CommandSuccessEmbed = CommandSuccessEmbed;

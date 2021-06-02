@@ -54,6 +54,7 @@ module.exports = {
 
 		if (!global.comandaa) global.commandaa = client.commands.get(cmdName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(cmdName));
 		const command = global.commandaa;
+		Log.debug(command);
 		if (!command) {
 			Log.debug(`${cmdName} not found in client commands collection or aliases`);
 			return;

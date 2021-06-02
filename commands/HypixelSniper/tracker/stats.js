@@ -8,8 +8,8 @@ module.exports = {
 	maxReqPermissions: ['ADMINISTRATOR'],
 	botExecutePermissions: ['SEND_MESSAGES'],
 	requireArgs: true,
-    usage: 's stats <player>',
-    stability: 'indev',
+	usage: 's stats <player>',
+	stability: 'indev',
 	execute(client, message) {
 		message.reply('Command is disabled. Do .status');
 	}

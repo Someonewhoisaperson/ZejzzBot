@@ -1,3 +1,7 @@
+const { CommandFailEmbed, CommandSuccessEmbed, Logger } = require('../../common/common.js');
+
+const Log = new Logger();
+
 module.exports = {
 	category: 'Moderation',
 	name: 'purge',
@@ -13,21 +17,15 @@ module.exports = {
 	stability: 'beta',
 	execute(client, message, args) {
 		if (args[0] > 100) {
-			for (var i = 0; i < (Math.floor(args[0] / 100) * 100) / 100; i++) {
-				try {
-					message.channel.bulkDelete(100);
-				} catch (DiscordAPIError) {
-					return message.channel.send(DiscordAPIError);
-				}
-				message.channel.send('Deleted 100 messages!');
+			return message.channel.send(CommandFailEmbed(message.author, 'You can only purge up to a 100 messages'));
+		}
+		message.channel.bulkDelete(args[0]).catch(error => {
+			if (error) {
+				Log.verbose(error);
+				return message.channel.send(CommandFailEmbed(message.author, 'Discord API Error'));
+			} else {
+				return message.channel.send(CommandSuccessEmbed(message.author, `Deleted ${args[0]} messages`));
 			}
-			return message.channel.send(`Unable to delete ${args[0]} so instead deleted ${Math.floor(args[0] / 100) * 100} messages`);
-		}
-		try {
-			message.channel.bulkDelete(args[0]);
-			return message.channel.send('Deleted messages');
-		} catch (DiscordAPIError) {
-			return message.channel.send(DiscordAPIError.message);
-		}
+		});
 	}
 };
