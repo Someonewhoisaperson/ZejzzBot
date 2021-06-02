@@ -113,7 +113,7 @@ const commandFolders = fs.readdirSync('./commands');
 Log.log(`List of command subdirs ${commandFolders}`);
 Log.debug('Verifying command files and loading commands....');
 
-const commandFiles = recursiveReadFiles('./commands');
+const commandFiles = recursiveReadFiles('./commands').filter(file => file.endsWith('.js'));
 Log.verbose(commandFiles);
 commandFiles.forEach(file => {
 	const command = require(file);
@@ -214,7 +214,7 @@ commandFiles.forEach(file => {
 		}
 		Log.warn(`No requireArgs specified for command ${command.name} (${file}) when requireArgs are ${command.requireArgs}`);
 	}
-	if (client.commands.has(command) || client.commands.has(command.name)) {
+	if ((client.commands.has(command) || client.commands.has(command.name)) && command.category !== 'HYPIXELSNIPER') {
 		Log.warn(`Failed to load command ${file}. Command with same name or alias already exists`);
 		asciiTable.addRow(readableFile,
 			command.name,
