@@ -15,7 +15,6 @@
         "port": 27017,
         "database": "n/a"
     },
-
     "sqlite-enabled": false,
     "sqlite-login": {
         "host": "localhost",
