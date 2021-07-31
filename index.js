@@ -9,6 +9,7 @@ const path = require('path');
 // Load common.js
 const { InvalidConfigurationError, CommmandMissingRequiredOptionError, InvalidCommandFileError, Logger, config } = require('./common/common.js');
 const { prefix } = config;
+require('discord-buttons')(client);
 // Initialize the Logger
 const Log = new Logger();
 
