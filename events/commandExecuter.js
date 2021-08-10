@@ -12,8 +12,7 @@ module.exports = {
 	async: true,
 	once: false,
 	async execute(message, client) {
-		function validateInputAndExecuteCommand(command, cmdName) { 
-
+		function validateInputAndExecuteCommand(command, cmdName) {
 			if (command.guildOnly && message.channel.type === 'dm') return message.reply('Command can only be used in a server');
 
 
