@@ -59,7 +59,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 client.cooldowns = new Discord.Collection();
 
-/*
 // CONNECTION TO DATABASE
 const mysql = require('mysql');
 Log.verbose(config['mysql-login'].host);
@@ -67,11 +66,6 @@ Log.verbose(process.env.MYSQL_USER);
 Log.verbose(process.env.MYSQL_PASSWORD);
 Log.verbose(config['mysql-login'].database);
 
-
-class Database {
-	// have methods to query and stuff https://www.w3schools.com/Js/js_classes.asp
-	// TODO
-}
 
 if (config['mysql-enabled']) {
 	var connection = mysql.createConnection({
@@ -91,7 +85,7 @@ if (config['mysql-enabled']) {
 			Log.verbose(rows);
 		});
 	});
-}*/
+}
 
 // EVENT HANDLER-
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));

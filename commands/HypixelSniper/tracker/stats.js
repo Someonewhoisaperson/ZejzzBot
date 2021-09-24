@@ -1,3 +1,5 @@
+const { Logger } = require('../../../common/common.js');
+const Log = new Logger();
 module.exports = {
 	category: 'HYPIXELSNIPER',
 	name: 'stats',
@@ -11,6 +13,6 @@ module.exports = {
 	usage: 's stats <player>',
 	stability: 'indev',
 	execute(client, message) {
-		message.reply('Command is disabled. Do .status');
+		Log.debug('Command hypixel sniper stats ran');
 	}
 };
