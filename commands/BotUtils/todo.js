@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const todo = require('./todo.json');
 module.exports = {
 	category: 'BotUtils',
