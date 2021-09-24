@@ -45,7 +45,7 @@ module.exports = {
 							{ name: '\u200B', value: '\u200B' },
 							{ name: 'Discord API Latency', value: `${Math.round(client.ws.ping)}ms`, inline: true },
 							{ name: 'Hypixel API Latency', value: `${Math.round(69420)}ms`, inline: true },
-							{ name: 'Reddit API Latency', value: `69420ms`, inline: true },
+							{ name: 'Reddit API Latency', value: `${Math.round(69420)}ms`, inline: true },
 							{ name: '\u200B', value: '\u200B' },
 							{ name: 'CPU Usage', value: `${Cpuinfo}% [${cpu.count()}]`, inline: true },
 							{ name: 'Memory usage', value: `${((os.totalmem / 1000000000) - (os.freemem / 1000000000)).toFixed(2)}gb/${(os.totalmem / 1000000000).toFixed(2)}gb`, inline: true },

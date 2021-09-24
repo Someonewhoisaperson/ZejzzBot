@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const todo = require('./todo.json');
 module.exports = {
 	category: 'BotUtils',
@@ -18,7 +19,7 @@ module.exports = {
 			return message.reply(todo.todo);
 		}
 		if (args.length > 1) {
-            args = args.join(' ').split('/');
+			args = args.join(' ').split('/');
 			todo.todo = [...args, todo.todo];
 			return message.reply('Done');
 		}
