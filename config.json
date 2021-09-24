@@ -5,9 +5,9 @@
     "default-logLevel": "verbose",
     "mysql-enabled": true,
     "mysql-login": {
-        "host": "45.134.8.171",
+        "host": "sql4.freesqldatabase.com",
         "port": 3306,
-        "database": "s10694_zejzzbot"
+        "database": "sql4439773"
     },
     "mongodb-enabled": false,
     "mongodb-login": {

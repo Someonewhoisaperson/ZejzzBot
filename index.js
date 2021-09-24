@@ -1,9 +1,9 @@
 /* eslint-disable complexity */
 // index.js | Entrypoint
+const fs = require('fs');
+// create .env file
 
-// Load sensitive environment variables
-const dotenv = require('dotenv');
-dotenv.config();
+
 const path = require('path');
 
 // Load common.js
@@ -13,6 +13,25 @@ const { prefix } = config;
 const Log = new Logger();
 
 
+// Create .env file
+try {
+	if (fs.existsSync('.env')) {
+		Log.debug('.env file already exists');
+	} else {
+		Log.debug('.env file does not exist');
+		// create the files
+		fs.writeFile('newfile.txt', 'OWNERID=\nTOKEN=\nMYSQL_USER=\nMYSQL_PASSWORD=\nMONGO_USERNAME=\nMONGO_PASSWORD=\nENV_TYPE=\nHYPIXEL_API=', (err) => {
+			if (err) throw err;
+			Log.success('File is created successfully.');
+		});
+	}
+} catch (err) {
+	console.error(err);
+}
+
+// Load sensitive environment variables
+const dotenv = require('dotenv');
+dotenv.config();
 function recursiveReadFiles(dirPath, arrayOfFiles) {
 	var files = fs.readdirSync(dirPath);
 	arrayOfFiles = arrayOfFiles || [];
@@ -34,13 +53,13 @@ if (!(config['mongodb-enabled'] || config['mysql-enabled'])) throw new InvalidCo
 if (prefix.length !== 1) throw new InvalidConfigurationError('Prefix must be 1 charecter long');
 
 // Require packages & declare instance of our client (bot)
-const fs = require('fs');
+
 const Ascii = require('ascii-table');
 const Discord = require('discord.js');
 const client = new Discord.Client();
 client.cooldowns = new Discord.Collection();
 
-
+/*
 // CONNECTION TO DATABASE
 const mysql = require('mysql');
 Log.verbose(config['mysql-login'].host);
@@ -72,7 +91,7 @@ if (config['mysql-enabled']) {
 			Log.verbose(rows);
 		});
 	});
-}
+}*/
 
 // EVENT HANDLER-
 const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
