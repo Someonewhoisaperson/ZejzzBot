@@ -132,7 +132,6 @@ asciiTable.setHeading('File', 'Command', 'Category', 'Permissions', 'Load Status
 const commandFolders = fs.readdirSync('./commands');
 Log.log(`List of command subdirs ${commandFolders}`);
 Log.debug('Verifying command files and loading commands....');
-
 const commandFiles = recursiveReadFiles('./commands').filter(file => file.endsWith('.js'));
 Log.verbose(commandFiles);
 commandFiles.forEach(file => {
