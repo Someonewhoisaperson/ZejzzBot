@@ -11,7 +11,7 @@ module.exports = {
 	requireArgs: true,
 	botAdminOnly: true,
 	usage: 'sqlquery <*args>',
-	stability: 'Dangerous',
+	stability: 'DANGEROUS',
 	execute(client, message) {
 		message.reply('Disabled');
 	}

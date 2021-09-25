@@ -5,7 +5,7 @@ module.exports = {
 	category: 'BotUtils',
 	name: 'eval',
 	description: 'Runs native js code',
-	guildOnly: true,
+	guildOnly: false,
 	cooldown: 3,
 	minReqPermissions: ['SEND_MESSAGES'],
 	maxReqPermissions: ['ADMINISTRATOR'],

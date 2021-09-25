@@ -1,2 +1,3 @@
-const { config, Logger } = require('./common.js');
-const Log = new Logger();
+/*
+use this file to store api functions
+*/

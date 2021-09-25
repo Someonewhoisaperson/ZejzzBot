@@ -10,8 +10,11 @@ module.exports = {
 	botExecutePermissions: ['SEND_MESSAGES'],
 	requireArgs: true,
 	usage: 'ping',
-	stability: 'disabled',
+	stability: 'stable',
 	execute(client, message) {
-		message.reply('Command is disabled. Do .status');
+		message.reply('Checking status...').then(async (msg) => {
+			msg.delete();
+			message.channel.send(`Ping:${msg.createdTimestamp - message.createdTimestamp}ms\nDiscord API Latency: ${client.ws.ping}\n`);
+		});
 	}
 };

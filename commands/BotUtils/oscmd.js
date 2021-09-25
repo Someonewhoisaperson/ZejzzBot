@@ -14,7 +14,7 @@ module.exports = {
 	requireArgs: true,
 	botAdminOnly: true,
 	usage: 'oscmd <*args>',
-	stability: 'Dangerous',
+	stability: 'DANGEROUS',
 	execute(client, message, args) {
 		exec(args.join(' '), (error, stdout, stderr) => {
 			if (error) {
