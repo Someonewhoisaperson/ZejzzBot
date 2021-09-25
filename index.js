@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 /* eslint-disable complexity */
 // index.js | Entrypoint
 const fs = require('fs');
@@ -80,8 +81,8 @@ if (config['mysql-enabled']) {
 		Log.success(`Connected to database MYSQL ${config['mysql-login'].host}`);
 		client.mysqlCon = connection;
 		Log.debug('Initialized connection to client.mysqlCon');
-		connection.query('SHOW TABLES', (err, rows) => {
-			if (err) throw err;
+		connection.query('SHOW TABLES', (error, rows) => {
+			if (error) throw error;
 			Log.verbose(rows);
 		});
 	});
@@ -132,9 +133,16 @@ asciiTable.setHeading('File', 'Command', 'Category', 'Permissions', 'Load Status
 const commandFolders = fs.readdirSync('./commands');
 Log.log(`List of command subdirs ${commandFolders}`);
 Log.debug('Verifying command files and loading commands....');
-
 const commandFiles = recursiveReadFiles('./commands').filter(file => file.endsWith('.js'));
 Log.verbose(commandFiles);
+
+const discordPermissionTypes = [`ADMINISTRATOR`, `CREATE_INSTANT_INVITE`,
+	`KICK_MEMBERS`, `BAN_MEMBERS`, `MANAGE_CHANNELS`, `MANAGE_GUILD`, `ADD_REACTIONS`, `VIEW_AUDIT_LOG`,
+	`PRIORITY_SPEAKER`, `STREAM`, `VIEW_CHANNEL`, `SEND_MESSAGES`,
+	`SEND_TTS_MESSAGES`, `MANAGE_MESSAGES`, `EMBED_LINKS`,
+	`ATTACH_FILES`, `READ_MESSAGE_HISTORY`, `MENTION_EVERYONE`, `USE_EXTERNAL_EMOJIS`, `VIEW_GUILD_INSIGHTS`, `CONNECT`, `SPEAK`, `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, `MOVE_MEMBERS`,
+	`USE_VAD`, `CHANGE_NICKNAME`, `MANAGE_NICKNAMES`, `MANAGE_ROLES`, `MANAGE_WEBHOOKS`, `MANAGE_EMOJIS`];
+
 commandFiles.forEach(file => {
 	const command = require(file);
 	Log.debug(`Iterating through file ${file}`);
@@ -214,6 +222,16 @@ commandFiles.forEach(file => {
 		}
 		command.maxReqPermission = ['SEND_MESSAGES'];
 		Log.warn(`No maxReqPermissons specified for command ${command.name} (${file})`);
+	}
+
+	if (!(command.minReqPermissions in discordPermissionTypes)) {
+		throw new InvalidCommandFileError(file, `${command.name} has invalid permission type set in minReqPermissions ${file}`);
+	}
+	if (!(command.maxReqPermissions in discordPermissionTypes)) {
+		throw new InvalidCommandFileError(file, `${command.name} has invalid permission type set in maxReqPermissions ${file}`);
+	}
+	if (!(command.botExecutePermissions in discordPermissionTypes)) {
+		throw new InvalidCommandFileError(file, `${command.name} has invalid permission type set in botExecutrePermissions ${file}`);
 	}
 	if (!command.stability) {
 		if (throwErr) {

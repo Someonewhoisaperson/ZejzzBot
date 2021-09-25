@@ -14,15 +14,16 @@ module.exports = {
 	usage: 's status <U/P> <uuid/player>',
 	stability: 'beta',
 	execute(client, message, args) {
-		const apiKey = client.env.HYPIXEL_API;
-		if (args[0].lower() === 'u') {
+		const apiKey = process.env.HYPIXELAPI;
+		if (args[0] === 'u') {
 			fetch(`https://api.hypixel.net/status?key=${apiKey}&uuid=${args[1]}`)
 				.then((response) => response.json())
 				.then(data => {
 					console.log(data);
+					message.reply(data.success);
 				})
 				.catch(error => console.log('Network Error', error));
-		} else if (args[0].lower() === 'p') {
+		} else if (args[0] === 'p') {
 			fetch(`https://api.hypixel.net/status?key=${apiKey}&name=${args[1]}`)
 				.then((response) => response.json())
 				.then(data => {

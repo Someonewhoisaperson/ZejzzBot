@@ -1,3 +1,4 @@
+/* eslint-disable no-process-env */
 /* eslint-disable no-undef */
 /* eslint-disable complexity */
 /* eslint-disable consistent-return */
@@ -17,10 +18,20 @@ module.exports = {
 
 
 			// Check user for permission to execute command
-			if (message.channel.type === '' && !message.member.hasPermission(command.minReqPermissions)) {
+			if (message.channel.type === 'text' && !message.member.hasPermission(command.minReqPermissions)) {
 				Log.verbose(`${message.author.id} did not have ${command.minReqPermissions} for ${command.name}`);
-				return message.reply('You do not have permission to use that command');
+				const cmdPermissionDenied = new Discord.MessageEmbed()
+					.setColor('e51d1d')
+					.setTitle('Permission denied.')
+					.setThumbnail('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.5APnHUkuSyDSCTo0Je5tVQHaHi%26pid%3DApi&f=1')
+					.setURL('https://dev.zejzz.net/')
+					.setTimestamp();
+				return message.channel.send(cmdPermissionDenied);
 			}
+
+
+			// Check if command is only allowed to be executed by bot managers
+			if (command.botAdminOnly && parseInt(message.author.id) !== parseInt(process.env.OWNERID)) return message.reply('***Command Restricted to bot developers only.***');
 
 			// Make sure we have the amount of arguments required
 			// Count how many required arguments are needed, by counting the amount of times '<' occurs in the usage and then dividing it by 2. Since each required argument is in the format <reqArg>
@@ -49,7 +60,6 @@ module.exports = {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 
-			if (command.botAdminOnly && !message.author.id === 717091956747927583) return message.reply('Denied.');
 			// Execute the command, if error then show it
 			if (command.stability === 'Dangerous' || command.stability === 'Caution') {
 				Log.warn(`${message.author.id} (${message.author.username}) attempted to run dangerous command ${command.name}`);

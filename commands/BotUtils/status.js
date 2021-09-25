@@ -15,7 +15,7 @@ module.exports = {
 	description: 'Shows status of the bot',
 	aliases: ['uptime', 'pingms'],
 	guildOnly: false,
-	botAdminOnly: true,
+	botAdminOnly: false,
 	cooldown: 15,
 	minReqPermissions: [' '],
 	maxReqPermissions: [' '],
@@ -65,6 +65,5 @@ module.exports = {
 				});
 			});
 		});
-		// TODO EMBED  OUT ACTIVE COMMANDS AND STATUS
 	}
 };

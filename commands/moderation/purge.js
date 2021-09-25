@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+/* eslint-disable new-cap */
 const { CommandFailEmbed, CommandSuccessEmbed, Logger } = require('../../common/common.js');
 
 const Log = new Logger();
@@ -9,9 +11,9 @@ module.exports = {
 	aliases: ['clean'],
 	guildOnly: true,
 	cooldown: 7,
-	minReqPermissions: ['DELETE_MESSAGES'],
-	maxReqPermissions: ['DELETE_MESSAGES'],
-	botExecutePermissions: ['MANAGE_MESSAGES', 'DELETE_MESSAGES'],
+	minReqPermissions: ['MANAGE_MESSAGES'],
+	maxReqPermissions: ['MANAGE_MESSAGES'],
+	botExecutePermissions: ['MANAGE_MESSAGES'],
 	requireArgs: true,
 	usage: '.purge <len>',
 	stability: 'beta',
