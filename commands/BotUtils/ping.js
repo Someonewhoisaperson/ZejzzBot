@@ -14,7 +14,7 @@ module.exports = {
 	execute(client, message) {
 		message.reply('Checking status...').then(async (msg) => {
 			msg.delete();
-			message.channel.send(`Ping:${msg.createdTimestamp - message.createdTimestamp}ms\nDiscord API Latency: ${client.ws.ping}\n`);
+			message.channel.send(`Ping: ${msg.createdTimestamp - message.createdTimestamp}ms\nDiscord API Latency: ${client.ws.ping}ms\n`);
 		});
 	}
 };
