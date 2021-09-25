@@ -49,7 +49,7 @@ module.exports = {
 			setTimeout(() => timestamps.delete(message.author.id), cooldownAmount);
 
 
-			if (command.botAdminOnly && !message.author.id === 717091956747927583) return message.reply('Denied.');
+			//if (command.botAdminOnly && message.author.id !== 717091956747927583) return message.reply('Denied.');
 			// Execute the command, if error then show it
 			if (command.stability === 'Dangerous' || command.stability === 'Caution') {
 				Log.warn(`${message.author.id} (${message.author.username}) attempted to run dangerous command ${command.name}`);

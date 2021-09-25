@@ -1,3 +1,6 @@
+const { Logger } = require('../../common/common.js');
+const Log = new Logger();
+
 module.exports = {
 	category: 'BotUtils',
 	name: 'eval',
@@ -12,8 +15,7 @@ module.exports = {
 	usage: 'eval <js>',
 	stability: 'DANGEROUS',
 	execute(client, message, args) {
-		if (message.author.id !== 717091956747927583) return;
-
+		Log.debug('Executing command eval');
 		const clean = text => {
 			// eslint-disable-next-line max-statements-per-line
 			if (typeof text === 'string') { return text.replace(/`/g, `\`${String.fromCharCode(8203)}`).replace(/@/g, `@${String.fromCharCode(8203)}`); } else { return text; }
